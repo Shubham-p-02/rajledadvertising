@@ -980,6 +980,11 @@ section,
   border-radius: 30px;
   height: 650px;
 }
+@media (max-width:767) {
+  .hero .img_hero{
+  position: fixed; 
+  }  
+}
 /*--------------------------------------------------------------
 # Featured Services Section
 --------------------------------------------------------------*/
