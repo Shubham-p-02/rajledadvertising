@@ -977,7 +977,7 @@ section,
   font-weight: 600;
 }
 .hero .img_hero{
-  border-radius: 30px;
+  border-radius: 60px;
   height: 650px;
 }
 @media (max-width:767) {
