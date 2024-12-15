@@ -987,7 +987,14 @@ flex: auto;
    width: 100%;
   }  
 }
+@media (min-width: 991px) {
+  .img_hero {
+flex: content;
+position: relative;
+    width: 100%;
 
+  }
+}
 @media (max-width: 480px) {
   .img_hero {
     height: 30%;
