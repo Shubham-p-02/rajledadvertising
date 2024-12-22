@@ -1171,7 +1171,7 @@ position: relative;
 }
 
 .call-to-action img {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   display: block;
