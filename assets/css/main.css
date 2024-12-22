@@ -1204,7 +1204,7 @@ position: relative;
   color: var(--default-color);
 }
 
-.call-to-action .cta-btn {
+.call-to-action .bi-telephone {
   font-family: var(--heading-font);
   font-weight: 500;
   font-size: 16px;
@@ -1218,7 +1218,7 @@ position: relative;
   color: var(--contrast-color);
 }
 
-.call-to-action .cta-btn:hover {
+.call-to-action .bi-telephone:hover {
   background: var(--accent-color);
   border: 2px solid var(--accent-color);
 }
