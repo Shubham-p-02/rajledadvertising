@@ -266,21 +266,27 @@
           method: 'POST',
           body: formData
         })
-        .then(response => response.text())
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return response.json();
+        })
         .then(data => {
           loadingDiv.style.display = 'none';
           
-          if (data.includes('success') || data.includes('Thank you')) {
+          if (data.status === 'success') {
             successDiv.style.display = 'block';
             form.reset();
           } else {
-            errorDiv.textContent = 'Sorry, there was an error sending your message. Please try again.';
+            errorDiv.textContent = data.message || 'Sorry, there was an error sending your message. Please try again.';
             errorDiv.style.display = 'block';
           }
         })
         .catch(error => {
+          console.error('Error:', error);
           loadingDiv.style.display = 'none';
-          errorDiv.textContent = 'Sorry, there was an error sending your message. Please try again.';
+          errorDiv.textContent = 'Sorry, there was an error sending your message. Please try again or contact us directly at rajivsarsande@gmail.com';
           errorDiv.style.display = 'block';
         })
         .finally(() => {

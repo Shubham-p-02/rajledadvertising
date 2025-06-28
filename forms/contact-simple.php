@@ -1,5 +1,7 @@
 <?php
 // Simple PHP contact form handler
+header('Content-Type: application/json');
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Get form data
     $name = $_POST['name'] ?? '';
@@ -9,13 +11,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     // Validate required fields
     if (empty($name) || empty($email) || empty($subject) || empty($message)) {
-        echo "Please fill in all required fields.";
+        echo json_encode(['status' => 'error', 'message' => 'Please fill in all required fields.']);
         exit;
     }
     
     // Validate email
     if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo "Please enter a valid email address.";
+        echo json_encode(['status' => 'error', 'message' => 'Please enter a valid email address.']);
         exit;
     }
     
@@ -35,13 +37,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $headers .= "MIME-Version: 1.0\r\n";
     $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
     
-    // Send email
-    if (mail($to, $email_subject, $email_body, $headers)) {
-        echo "OK";
+    // Try to send email
+    $mail_sent = mail($to, $email_subject, $email_body, $headers);
+    
+    if ($mail_sent) {
+        echo json_encode(['status' => 'success', 'message' => 'Your message has been sent. Thank you!']);
     } else {
-        echo "Failed to send email. Please try again.";
+        // Fallback: Save to file if mail fails
+        $log_file = 'contact_log.txt';
+        $log_entry = date('Y-m-d H:i:s') . " - From: $name ($email) - Subject: $subject - Message: $message\n";
+        
+        if (file_put_contents($log_file, $log_entry, FILE_APPEND | LOCK_EX)) {
+            echo json_encode(['status' => 'success', 'message' => 'Your message has been received. We will get back to you soon!']);
+        } else {
+            // Log error for debugging
+            error_log("Failed to send email from contact form. To: $to, From: $email");
+            echo json_encode(['status' => 'error', 'message' => 'Failed to send email. Please contact us directly at rajivsarsande@gmail.com']);
+        }
     }
 } else {
-    echo "Invalid request method.";
+    echo json_encode(['status' => 'error', 'message' => 'Invalid request method.']);
 }
 ?> 
